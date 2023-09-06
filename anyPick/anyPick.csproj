@@ -26,4 +26,9 @@
     <PackageReference Include="Younited.HealthCheck.EntityFrameworkMigrations" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Profile\" />
+    <Folder Include="Pics\profile_Pic\" />
+  </ItemGroup>
+
 </Project>

@@ -28,6 +28,7 @@ namespace anyPick.Controllers
         }
 
         //Token Generation Method Started----------------------------------------------------------------------------------/
+
         private string generateToken(int UserId, string deviceid, int roleid)
         {
             var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"])); //
@@ -39,12 +40,16 @@ namespace anyPick.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
         //Token Generation Method Ended------------------------------------------------------------------------------------/
 
         //Login EndPoint Method Started------------------------------------------------------------------------------------/
+
+
+
         [HttpPost]
-        [Route("Login")]
-        public async Task<IActionResult> Login(String Devicid, string? phone, int Roleid, bool Verified)
+        [Route("login")]
+        public async Task<IActionResult> login(String Devicid, string? phone, int Roleid, bool Verified)
         {
            AnyPick_user _User = new AnyPick_user();
            AnyPickUserLogin _UserLogin = new AnyPickUserLogin();
@@ -58,12 +63,12 @@ namespace anyPick.Controllers
                     var token = generateToken(userid, Devicid, Roleid);
 
                     return StatusCode(StatusCodes.Status200OK,
-                                      new apResponse { StatusCode = 200,StatusMessage="Guest User Login SuccessFull",ErrorMessage="Null",AuthToken=token });
+                                      new apResponse<string> { StatusCode = 200,StatusMessage="Guest User Login SuccessFull",ErrorMessage="Null",data=token });
                 }
                 else
                 {
                     return StatusCode(StatusCodes.Status404NotFound,
-                                     new apResponse { StatusCode = 404, StatusMessage = "Role Not Found", ErrorMessage = "Null", data = null});
+                                     new apResponse<string> { StatusCode = 404, StatusMessage = "Role Not Found", ErrorMessage = "Null", data = null});
                 }
             }
             else if(Verified.ToString().Contains("True") && Roleid == 2)
@@ -72,7 +77,7 @@ namespace anyPick.Controllers
                 if (userid == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound,
-                                    new apResponse { StatusCode = 404, StatusMessage = "unSuccessFull", ErrorMessage = "UserID Not Found", data = null });
+                                    new apResponse<string> { StatusCode = 404, StatusMessage = "unSuccessFull", ErrorMessage = "UserID Not Found", data = null });
                 }
                 else
                 {
@@ -80,37 +85,131 @@ namespace anyPick.Controllers
                     var token = generateToken(userid, Devicid, Roleid);
 
                     return StatusCode(StatusCodes.Status200OK,
-                                    new apResponse { StatusCode = 200, StatusMessage = "RegisterUser Login SuccessFull", ErrorMessage = "Null", AuthToken = token });
+                                    new apResponse<string> { StatusCode = 200, StatusMessage = "RegisterUser Login SuccessFull", ErrorMessage = "Null", data = token });
                 }
             }
 
             return StatusCode(StatusCodes.Status204NoContent,
-                 new apResponse { StatusCode = 204,StatusMessage="No Content Found",ErrorMessage="Invalid Role" ,data=null});
+                 new apResponse<string> { StatusCode = 204,StatusMessage="No Content Found",ErrorMessage="Invalid Role" ,data=null});
         }
+
+
+
         //Login EndPoint Method Ended-------------------------------------------------------------------------------------/
 
 
 
         //Signup EndPoint Method Started------------------------------------------------------------------------------------/
+
+
         [HttpPost]
         [Route("Signup")]
-        public async Task<IActionResult> Signup([FromBody]AnyPick_user anyPick_User)
+        public async Task<IActionResult> signup([FromBody]AnyPick_user anyPick_User)
         {
             AnyPick_user anyPick_User1 = new AnyPick_user();
             anyPick_User1.RegistratingUser(anyPick_User);
             if (anyPick_User1.UserId == 10)
             {
                 return StatusCode(StatusCodes.Status200OK,
-                new apResponse { StatusCode = 200, StatusMessage = "User Alerady Created", ErrorMessage = "Null", data = null });
+                new apResponse<string> { StatusCode = 200, StatusMessage = "User Alerady Exist", ErrorMessage = "Null", data = null });
             }
             else
             {
                 return StatusCode(StatusCodes.Status201Created,
-                new apResponse { StatusCode = 201, StatusMessage = "User Created SuccessFully", ErrorMessage = "null", data = null });
+                new apResponse<string> { StatusCode = 201, StatusMessage = "User Created SuccessFully", ErrorMessage = "null", data = null });
             }
 
 
         }
+
+
+
+        //Signup EndPoint Method Started------------------------------------------------------------------------------------/
+
+
+
+        //All_Nearby Resturants EndPoint Method Started---------------------------------------------------------------------/
+
+
+
+        [HttpGet]
+        [Route("allnearby_Resturants")]
+        public async Task<ActionResult> allnearby_Resturants()  //ActionResult<IEnumerable<Resturant>>
+        {
+            Resturant resturant = new Resturant();
+           var list= resturant.Getresturants();
+            if (list ==null)
+            {
+                return StatusCode(StatusCodes.Status200OK,
+                new apResponse<string> { StatusCode =404 , StatusMessage = "Not Found", ErrorMessage = "No Data Found", data = null });
+            }
+            else
+            {
+                //String JsonR = JsonSerializer.Serialize(list);
+                return StatusCode(StatusCodes.Status200OK,
+                new apResponse<List<Resturant>> { StatusCode = 200, StatusMessage = "OK", ErrorMessage = "", data = list });
+            }
+           
+        }
+
+
+        //All_Nearby Resturants EndPoint Method Ended---------------------------------------------------------------------/
+
+
+        //Update User-Profile EndPoint Method Started----------------------------------------------------------------------/
+        [HttpPost]
+        [Route("uploading_userProfile")]
+        public async Task<ActionResult> uploading_userProfile(int id, [FromForm] ImageUpload image)
+        {
+         ImageUpload imageUpload = new ImageUpload();
+            var st=imageUpload.profileImage(id, image);
+           // try
+            //{
+                if (st == null)
+                {
+                    return StatusCode(StatusCodes.Status203NonAuthoritative,
+                        new apResponse<string> { StatusCode = 204, StatusMessage = "Select Image", ErrorMessage = "", data = null });
+                }
+                else if (st.Contains("User Id Not Exist"))
+                {
+                    return StatusCode(StatusCodes.Status206PartialContent,
+                        new apResponse<string> { StatusCode = 204, StatusMessage = "UserId not EXit", ErrorMessage = "", data = null });
+                }
+                else 
+                {
+                    return StatusCode(StatusCodes.Status416RequestedRangeNotSatisfiable,
+                        new apResponse<string> { StatusCode = 201, StatusMessage = "Pics Saved", ErrorMessage = "", data = "Picture Saved Succesfully" });
+                }
+           
+            //}
+            //catch (Exception ex)
+            //{
+            //    return StatusCode(StatusCodes.Status200OK,
+            //            new apResponse<string> { StatusCode = 404, StatusMessage = ex.Message, ErrorMessage = "", data = null });
+            //}
+        }
+
+
+
+
+
+
+
+
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
 
         //Authorization end point check End-Point Ended--------------------------------------------------------------------/
         [Authorize]
@@ -139,9 +238,10 @@ namespace anyPick.Controllers
             }
             return Ok(ans);
         }
-
+        //Authorization end point check End-Point Ended--------------------------------------------------------------------/
 
     }
-    }
+}
+
 
 

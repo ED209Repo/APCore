@@ -14,10 +14,11 @@ namespace anyPick.Models
         public string Status { get; set; }
         public string Lastlogin { get; set; }
 
+        string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
 
         public void SetUser_LoginGuest(int RoleId, string DeviceId, int UserId)
         {
-            SqlConnection con = new SqlConnection("Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL");
+            SqlConnection con = new SqlConnection(cs);
             if (con.State == System.Data.ConnectionState.Closed)
             {
                 con.Open();
@@ -61,7 +62,7 @@ namespace anyPick.Models
 
         public void SetUser_LoginRegisterUser(int RoleId, string DeviceId, int UserId)
         {
-            SqlConnection con = new SqlConnection("Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL");
+            SqlConnection con = new SqlConnection(cs);
             if (con.State == System.Data.ConnectionState.Closed)
             {
                 con.Open();
@@ -92,10 +93,8 @@ namespace anyPick.Models
                             cmd2.ExecuteNonQuery();
                             con.Close();
                         }
-
                         con.Close();
                     }
-
                 }
                 else
                 {
@@ -105,7 +104,8 @@ namespace anyPick.Models
                     con.Close();
                 }
             }
-
         }
+
+
     }
 }
