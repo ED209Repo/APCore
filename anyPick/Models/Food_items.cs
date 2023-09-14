@@ -12,12 +12,22 @@ namespace anyPick.Models
         public string Unit { get; set; }
         public string Unit_perPrice { get; set; }
         public string Prepare_time { get; set; }
-        string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
+        public List<Variations> variations { get; set; }
+       
+
+
+        private readonly IConfiguration _config;
+        public Food_items(IConfiguration configuration)
+        {
+            this._config= configuration;
+        }
+
+
 
         public List<Food_items> foods_items(int Rest_Cat_id)
         {
             List<Food_items> ids = new List<Food_items>();
-            SqlConnection con = new SqlConnection(cs);
+            SqlConnection con = new SqlConnection(_config.GetConnectionString("ConnStr"));
             bool check = false;
             if (con.State == System.Data.ConnectionState.Closed)
             {
@@ -33,7 +43,9 @@ namespace anyPick.Models
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        Food_items item = new Food_items();
+                        Food_items item = new Food_items(_config);
+                        Variations s = new Variations(_config);
+                        List<Variations> O = new List<Variations>();
 
                         item.Food_Item_id = int.Parse(dt.Rows[i][0].ToString());
                         item.Rest_Cat_id = int.Parse(dt.Rows[i][1].ToString());
@@ -42,6 +54,9 @@ namespace anyPick.Models
                         item.Unit = dt.Rows[i][4].ToString();
                         item.Unit_perPrice = dt.Rows[i][5].ToString();
                         item.Prepare_time =dt.Rows[i][6].ToString();
+
+                        O = s.GetVariations(item.Food_Item_id);
+                        item.variations = O;
                         ids.Add(item);
                     }
 

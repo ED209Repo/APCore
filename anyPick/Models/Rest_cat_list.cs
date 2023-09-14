@@ -11,12 +11,19 @@ namespace anyPick.Models
         public string Name { get; set; }
         public int Parent_Category { get; set; }
         public List<Food_items> getting_food_Items { get; set; }
-        string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
+
+        private readonly IConfiguration _config;
+      
+        public Rest_cat_list(IConfiguration configuration)
+        {
+            this._config = configuration;
+        }
+        
       
         public List<Rest_cat_list> Categoryids(int rest_id)
         {
             List<Rest_cat_list> ids = new List<Rest_cat_list>();
-            SqlConnection con = new SqlConnection(cs);
+            SqlConnection con = new SqlConnection(_config.GetConnectionString("ConnStr"));
             bool check = false;
             if (con.State == System.Data.ConnectionState.Closed)
             {
@@ -32,8 +39,8 @@ namespace anyPick.Models
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        Rest_cat_list res = new Rest_cat_list();
-                        Food_items s = new Food_items();
+                        Rest_cat_list res = new Rest_cat_list(_config);
+                        Food_items s = new Food_items(_config);
                         List<Food_items> O = new List<Food_items>();
                         res.Rest_Cat_id = int.Parse(dt.Rows[i][0].ToString());
                         res.Rest_id = int.Parse(dt.Rows[i][1].ToString());
@@ -50,6 +57,10 @@ namespace anyPick.Models
                     con.Close();
                 }
 
+            }
+            else
+            {
+                con.Close();
             }
 
             if (check == true)

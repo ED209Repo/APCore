@@ -8,80 +8,86 @@ namespace anyPick.Models
     {
         public IFormFile file { get; set; }
 
-        string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;" +
-            "Data Source=DESKTOP-DEDQ8GT\\SQL";
 
-        public ImageUpload()
-        {
-            //string _uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "profile_Pic");//Profile 
-        }
+        private readonly IConfiguration _config;
+        // public ImageUpload(IConfiguration configuration)
+        //{
+        //     file = null;
+        //     this._config = configuration;
+        //}
 
-        private readonly string _uploadpath;
-        public string profileImage(int id,ImageUpload image)
+
+        public string profileImage(int id, ImageUpload image)
         {
-            bool chec=false;
-            int stor_id;
+            bool chec = false;
+            String FileName = image.file.FileName;
+            String ext = Path.GetExtension(FileName);
+            String[] imageExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".tif", ".psd", ".svg" };
+            string _uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "Pics\\profile_Pic");
+            string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
             if (image == null)
             {
                 return null;
             }
 
-
-           
             try
             {
-                string _uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "Pics/profile_Pic");//Profile 
-                SqlConnection con = new SqlConnection(cs);
-                if (con.State == System.Data.ConnectionState.Closed)
+                if (imageExtensions.Contains(ext))
                 {
-                    con.Open();
-                    string q1 = "select Userid from AnyPickuser where userid='"+ id + "'";
-                    SqlCommand cmd = new SqlCommand(q1, con);
-                    SqlDataAdapter sdr = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-
-                    sdr.Fill(dt);
-                    if (dt.Rows.Count > 0)
+                    SqlConnection con = new SqlConnection(cs);
+                    if (con.State == System.Data.ConnectionState.Closed)
                     {
-                       chec= true;
-                        con.Close();
+                        con.Open();
+                        string q1 = "select Userid from AnyPickuser where userid='" + id + "'";
+                        SqlCommand cmd = new SqlCommand(q1, con);
+                        SqlDataAdapter sdr = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+
+                        sdr.Fill(dt);
+                        if (dt.Rows.Count > 0)
+                        {
+                            chec = true;
+                            con.Close();
+                        }
+                        else
+                        {
+                            return "User Id Not Exist";
+                        }
                     }
                     else
                     {
-                        return "User Id Not Exist";
-                        
+                        con.Close();
+                    }
+
+                    var fileName = $"{id}{ext}";
+                    var filePath = Path.Combine(_uploadpath, fileName);
+                    using (Stream stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        image.file.CopyTo(stream);
+                    }
+                    if (chec == true)
+                    {
+                        if (con.State == System.Data.ConnectionState.Closed)
+                        {
+                            con.Open();
+                            string q1 = "update anypickuser set profileimage='" + filePath.ToString() + "' where userid='" + id + "'";
+                            SqlCommand cmd = new SqlCommand(q1, con);
+                            cmd.ExecuteNonQuery();
+                            con.Close();
+                        }
+                        else
+                        {
+                            con.Close();
+                        }
+
                     }
 
                 }
                 else
                 {
-                    con.Close() ;
+                    return "Plz Upload Image With" + imageExtensions.ToString();
                 }
 
-                var fileName = $"{id}.{"jpg"}";
-                var filePath = Path.Combine(_uploadpath,fileName);
-
-                using (Stream stream=new FileStream(filePath, FileMode.Create))
-                {
-                    image.file.CopyTo(stream);
-                }
-
-                if (chec = true)
-                {
-                    if (con.State == System.Data.ConnectionState.Closed)
-                    {
-                        con.Open();
-                        string q1 = "update anypickuser set profileimage='" + filePath.ToString() + "' where userid='" + id + "'";
-                        SqlCommand cmd = new SqlCommand(q1, con);
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
-                    else
-                    {
-                        con.Close();
-                    }
-                   
-                }
                 return "Pic saved Successfully";
 
             }
@@ -91,5 +97,7 @@ namespace anyPick.Models
             }
 
         }
+
+
     }
 }

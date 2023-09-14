@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Profile\" />
     <Folder Include="Pics\profile_Pic\" />
   </ItemGroup>
 

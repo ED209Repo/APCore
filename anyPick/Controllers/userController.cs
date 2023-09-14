@@ -25,9 +25,10 @@ namespace anyPick.Controllers
         public userController(IConfiguration configuration)
         {
             _config = configuration;
+
         }
 
-        //Token Generation Method Started----------------------------------------------------------------------------------/
+        //Token Generation Method ----------------------------------------------------------------------------------/
 
         private string generateToken(int UserId, string deviceid, int roleid)
         {
@@ -41,18 +42,15 @@ namespace anyPick.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        //Token Generation Method Ended------------------------------------------------------------------------------------/
-
-        //Login EndPoint Method Started------------------------------------------------------------------------------------/
-
-
-
+       
+        //Login EndPoint Method ------------------------------------------------------------------------------------/
+       
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> login(String Devicid, string? phone, int Roleid, bool Verified)
         {
-           AnyPick_user _User = new AnyPick_user();
-           AnyPickUserLogin _UserLogin = new AnyPickUserLogin();
+           AnyPick_user _User = new AnyPick_user(_config);
+           AnyPickUserLogin _UserLogin = new AnyPickUserLogin(_config);
 
             if (Verified.ToString().Contains("False") && Roleid == 1)
             {
@@ -89,24 +87,20 @@ namespace anyPick.Controllers
                 }
             }
 
-            return StatusCode(StatusCodes.Status204NoContent,
+            return StatusCode(StatusCodes.Status200OK,
                  new apResponse<string> { StatusCode = 204,StatusMessage="No Content Found",ErrorMessage="Invalid Role" ,data=null});
         }
 
 
 
-        //Login EndPoint Method Ended-------------------------------------------------------------------------------------/
-
-
-
-        //Signup EndPoint Method Started------------------------------------------------------------------------------------/
-
+       
+        //Signup EndPoint Method------------------------------------------------------------------------------------/
 
         [HttpPost]
         [Route("Signup")]
         public async Task<IActionResult> signup([FromBody]AnyPick_user anyPick_User)
         {
-            AnyPick_user anyPick_User1 = new AnyPick_user();
+            AnyPick_user anyPick_User1 = new AnyPick_user(_config);
             anyPick_User1.RegistratingUser(anyPick_User);
             if (anyPick_User1.UserId == 10)
             {
@@ -124,19 +118,14 @@ namespace anyPick.Controllers
 
 
 
-        //Signup EndPoint Method Started------------------------------------------------------------------------------------/
-
-
-
-        //All_Nearby Resturants EndPoint Method Started---------------------------------------------------------------------/
-
+        //All_Nearby Resturants EndPoint Method ---------------------------------------------------------------------/
 
 
         [HttpGet]
         [Route("allnearby_Resturants")]
-        public async Task<ActionResult> allnearby_Resturants()  //ActionResult<IEnumerable<Resturant>>
+        public async Task<ActionResult> allnearby_Resturants()  
         {
-            Resturant resturant = new Resturant();
+            Resturant resturant = new Resturant(_config);
            var list= resturant.Getresturants();
             if (list ==null)
             {
@@ -153,51 +142,20 @@ namespace anyPick.Controllers
         }
 
 
-        //All_Nearby Resturants EndPoint Method Ended---------------------------------------------------------------------/
-
-
-        //Update User-Profile EndPoint Method Started----------------------------------------------------------------------/
-        [HttpPost]
-        [Route("uploading_userProfile")]
-        public async Task<ActionResult> uploading_userProfile(int id, [FromForm] ImageUpload image)
-        {
-         ImageUpload imageUpload = new ImageUpload();
-            var st=imageUpload.profileImage(id, image);
-           // try
-            //{
-                if (st == null)
-                {
-                    return StatusCode(StatusCodes.Status203NonAuthoritative,
-                        new apResponse<string> { StatusCode = 204, StatusMessage = "Select Image", ErrorMessage = "", data = null });
-                }
-                else if (st.Contains("User Id Not Exist"))
-                {
-                    return StatusCode(StatusCodes.Status206PartialContent,
-                        new apResponse<string> { StatusCode = 204, StatusMessage = "UserId not EXit", ErrorMessage = "", data = null });
-                }
-                else 
-                {
-                    return StatusCode(StatusCodes.Status416RequestedRangeNotSatisfiable,
-                        new apResponse<string> { StatusCode = 201, StatusMessage = "Pics Saved", ErrorMessage = "", data = "Picture Saved Succesfully" });
-                }
-           
-            //}
-            //catch (Exception ex)
-            //{
-            //    return StatusCode(StatusCodes.Status200OK,
-            //            new apResponse<string> { StatusCode = 404, StatusMessage = ex.Message, ErrorMessage = "", data = null });
-            //}
-        }
-
-
-
-
-
-
 
 
 
        
+
+
+
+
+
+
+
+
+
+
 
 
 

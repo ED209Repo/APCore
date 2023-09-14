@@ -12,16 +12,17 @@ namespace anyPick.Models
         public string Resturant_type { get; set;}
         public string Open_Close_Time { get; set;}
         public string Offdays { get; set; }
-        
-
         public List<Rest_cat_list>  Rest_Cat_ { get; set; }
 
-        public Resturant()
+        private readonly IConfiguration _config;
+       
+        public Resturant(IConfiguration configuration)
         {
-           Rest_Cat_= new List<Rest_cat_list>();
+            _config = configuration;
+            Rest_Cat_ = new List<Rest_cat_list>();
         }
 
-        string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
+       // string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
 
         public List<Resturant> Getresturants()
         {
@@ -30,7 +31,7 @@ namespace anyPick.Models
             bool check = false;
 
 
-            SqlConnection con = new SqlConnection(cs);
+            SqlConnection con = new SqlConnection(_config.GetConnectionString("ConnStr"));
             if (con.State == System.Data.ConnectionState.Closed)
             {
                 con.Open();
@@ -46,8 +47,8 @@ namespace anyPick.Models
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
 
-                        Resturant res = new Resturant();
-                        Rest_cat_list s = new Rest_cat_list();
+                        Resturant res = new Resturant(_config);
+                        Rest_cat_list s = new Rest_cat_list(_config);
                         List<Rest_cat_list> O = new List<Rest_cat_list>();
                        
                         res.Rest_Id = int.Parse(dt.Rows[i][0].ToString());
