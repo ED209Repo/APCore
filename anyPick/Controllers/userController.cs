@@ -25,9 +25,11 @@ namespace anyPick.Controllers
         public userController(IConfiguration configuration)
         {
             _config = configuration;
+
         }
 
-        //Token Generation Method Started----------------------------------------------------------------------------------/
+        //Token Generation Method ----------------------------------------------------------------------------------/
+
         private string generateToken(int UserId, string deviceid, int roleid)
         {
             var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"])); //
@@ -39,15 +41,16 @@ namespace anyPick.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        //Token Generation Method Ended------------------------------------------------------------------------------------/
 
-        //Login EndPoint Method Started------------------------------------------------------------------------------------/
+       
+        //Login EndPoint Method ------------------------------------------------------------------------------------/
+       
         [HttpPost]
-        [Route("Login")]
-        public async Task<IActionResult> Login(String Devicid, string? phone, int Roleid, bool Verified)
+        [Route("login")]
+        public async Task<IActionResult> login(String Devicid, string? phone, int Roleid, bool Verified)
         {
-           AnyPick_user _User = new AnyPick_user();
-           AnyPickUserLogin _UserLogin = new AnyPickUserLogin();
+           AnyPick_user _User = new AnyPick_user(_config);
+           AnyPickUserLogin _UserLogin = new AnyPickUserLogin(_config);
 
             if (Verified.ToString().Contains("False") && Roleid == 1)
             {
@@ -58,12 +61,12 @@ namespace anyPick.Controllers
                     var token = generateToken(userid, Devicid, Roleid);
 
                     return StatusCode(StatusCodes.Status200OK,
-                                      new apResponse { StatusCode = 200,StatusMessage="Guest User Login SuccessFull",ErrorMessage="Null",AuthToken=token });
+                                      new apResponse<string> { StatusCode = 200,StatusMessage="Guest User Login SuccessFull",ErrorMessage="Null",data=token });
                 }
                 else
                 {
                     return StatusCode(StatusCodes.Status404NotFound,
-                                     new apResponse { StatusCode = 404, StatusMessage = "Role Not Found", ErrorMessage = "Null", data = null});
+                                     new apResponse<string> { StatusCode = 404, StatusMessage = "Role Not Found", ErrorMessage = "Null", data = null});
                 }
             }
             else if(Verified.ToString().Contains("True") && Roleid == 2)
@@ -72,7 +75,7 @@ namespace anyPick.Controllers
                 if (userid == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound,
-                                    new apResponse { StatusCode = 404, StatusMessage = "unSuccessFull", ErrorMessage = "UserID Not Found", data = null });
+                                    new apResponse<string> { StatusCode = 404, StatusMessage = "unSuccessFull", ErrorMessage = "UserID Not Found", data = null });
                 }
                 else
                 {
@@ -80,37 +83,91 @@ namespace anyPick.Controllers
                     var token = generateToken(userid, Devicid, Roleid);
 
                     return StatusCode(StatusCodes.Status200OK,
-                                    new apResponse { StatusCode = 200, StatusMessage = "RegisterUser Login SuccessFull", ErrorMessage = "Null", AuthToken = token });
+                                    new apResponse<string> { StatusCode = 200, StatusMessage = "RegisterUser Login SuccessFull", ErrorMessage = "Null", data = token });
                 }
             }
 
-            return StatusCode(StatusCodes.Status204NoContent,
-                 new apResponse { StatusCode = 204,StatusMessage="No Content Found",ErrorMessage="Invalid Role" ,data=null});
+            return StatusCode(StatusCodes.Status200OK,
+                 new apResponse<string> { StatusCode = 204,StatusMessage="No Content Found",ErrorMessage="Invalid Role" ,data=null});
         }
-        //Login EndPoint Method Ended-------------------------------------------------------------------------------------/
 
 
 
-        //Signup EndPoint Method Started------------------------------------------------------------------------------------/
+       
+        //Signup EndPoint Method------------------------------------------------------------------------------------/
+
         [HttpPost]
         [Route("Signup")]
-        public async Task<IActionResult> Signup([FromBody]AnyPick_user anyPick_User)
+        public async Task<IActionResult> signup([FromBody]AnyPick_user anyPick_User)
         {
-            AnyPick_user anyPick_User1 = new AnyPick_user();
+            AnyPick_user anyPick_User1 = new AnyPick_user(_config);
             anyPick_User1.RegistratingUser(anyPick_User);
             if (anyPick_User1.UserId == 10)
             {
                 return StatusCode(StatusCodes.Status200OK,
-                new apResponse { StatusCode = 200, StatusMessage = "User Alerady Created", ErrorMessage = "Null", data = null });
+                new apResponse<string> { StatusCode = 200, StatusMessage = "User Alerady Exist", ErrorMessage = "Null", data = null });
             }
             else
             {
                 return StatusCode(StatusCodes.Status201Created,
-                new apResponse { StatusCode = 201, StatusMessage = "User Created SuccessFully", ErrorMessage = "null", data = null });
+                new apResponse<string> { StatusCode = 201, StatusMessage = "User Created SuccessFully", ErrorMessage = "null", data = null });
             }
 
 
         }
+
+
+
+        //All_Nearby Resturants EndPoint Method ---------------------------------------------------------------------/
+
+
+        [HttpGet]
+        [Route("allnearby_Resturants")]
+        public async Task<ActionResult> allnearby_Resturants()  
+        {
+            Resturant resturant = new Resturant(_config);
+           var list= resturant.Getresturants();
+            if (list ==null)
+            {
+                return StatusCode(StatusCodes.Status200OK,
+                new apResponse<string> { StatusCode =404 , StatusMessage = "Not Found", ErrorMessage = "No Data Found", data = null });
+            }
+            else
+            {
+                //String JsonR = JsonSerializer.Serialize(list);
+                return StatusCode(StatusCodes.Status200OK,
+                new apResponse<List<Resturant>> { StatusCode = 200, StatusMessage = "OK", ErrorMessage = "", data = list });
+            }
+           
+        }
+
+
+
+
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //Authorization end point check End-Point Ended--------------------------------------------------------------------/
         [Authorize]
@@ -139,9 +196,10 @@ namespace anyPick.Controllers
             }
             return Ok(ans);
         }
-
+        //Authorization end point check End-Point Ended--------------------------------------------------------------------/
 
     }
-    }
+}
+
 
 

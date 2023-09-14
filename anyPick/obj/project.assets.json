@@ -2605,11 +2605,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\BIIT\\WE\\anyPick\\anyPick\\anyPick.csproj",
+      "projectUniqueName": "D:\\BIIT\\APCore\\anyPick\\anyPick.csproj",
       "projectName": "anyPick",
-      "projectPath": "D:\\BIIT\\WE\\anyPick\\anyPick\\anyPick.csproj",
+      "projectPath": "D:\\BIIT\\APCore\\anyPick\\anyPick.csproj",
       "packagesPath": "C:\\Users\\Hashir Zaheer\\.nuget\\packages\\",
-      "outputPath": "D:\\BIIT\\WE\\anyPick\\anyPick\\obj\\",
+      "outputPath": "D:\\BIIT\\APCore\\anyPick\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Hashir Zaheer\\AppData\\Roaming\\NuGet\\NuGet.Config",
