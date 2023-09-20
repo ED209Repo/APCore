@@ -23,12 +23,19 @@ namespace anyPick.Models
 
 
 
-        private readonly IConfiguration _config;
+        
+        public AnyPick_user()
+        {
+           
+        }
         public AnyPick_user(IConfiguration configuration)
         {
             this._config = configuration;
         }
-        
+
+        private readonly IConfiguration _config;
+
+
 
         public int getId(int roleid, string phone)
         {
@@ -40,7 +47,8 @@ namespace anyPick.Models
             }
             else
             {
-                SqlConnection con = new SqlConnection(_config.GetConnectionString("ConnStr"));
+               // string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
+                SqlConnection con = new SqlConnection(_config.GetConnectionString("ConnStr"));// _config.GetConnectionString("ConnStr"
                 if (con.State == System.Data.ConnectionState.Closed)
                 {
                     con.Open();
@@ -78,7 +86,8 @@ namespace anyPick.Models
 
         public void RegistratingUser(AnyPick_user anyPick_User)
         {
-            SqlConnection con = new SqlConnection(_config.GetConnectionString("ConnStr"));
+            string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
+            SqlConnection con = new SqlConnection(_config.GetConnectionString("ConnStr")); //_config.GetConnectionString("ConnStr")
             if (con.State == System.Data.ConnectionState.Closed)
             {
                 con.Open();

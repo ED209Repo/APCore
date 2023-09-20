@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualBasic;
 using System.Data;
@@ -9,6 +10,7 @@ using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -29,22 +31,34 @@ namespace anyPick.Controllers
         }
 
         //Token Generation Method ----------------------------------------------------------------------------------/
-
-        private string generateToken(int UserId, string deviceid, int roleid)
+        private string GenerateToken(int Roleid, string Deviceid,int userid)
         {
-            var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"])); //
-            var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"], null,
-                expires: DateTime.Now.AddMinutes(5),
-                signingCredentials: credentials);
+            var claims = new[]
+            {
+              new Claim("Roleid", Roleid.ToString()), // User ID
+             new Claim("DeviceId", Deviceid), // Device ID
+              new Claim("userid", userid.ToString())
+            };
+
+            var token = new JwtSecurityToken(
+                _config["Jwt:Issuer"],
+                _config["Jwt:Audience"],
+                 claims: claims,
+                 expires: DateTime.Now.AddMinutes(2),
+                 signingCredentials: credentials
+          
+            );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+       
 
-       
+
         //Login EndPoint Method ------------------------------------------------------------------------------------/
-       
+
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> login(String Devicid, string? phone, int Roleid, bool Verified)
@@ -58,7 +72,7 @@ namespace anyPick.Controllers
                 if (userid == 1002)
                 {
                     _UserLogin.SetUser_LoginGuest(Roleid,Devicid,userid);
-                    var token = generateToken(userid, Devicid, Roleid);
+                    var token = GenerateToken(Roleid, Devicid, userid);
 
                     return StatusCode(StatusCodes.Status200OK,
                                       new apResponse<string> { StatusCode = 200,StatusMessage="Guest User Login SuccessFull",ErrorMessage="Null",data=token });
@@ -80,7 +94,7 @@ namespace anyPick.Controllers
                 else
                 {
                     _UserLogin.SetUser_LoginRegisterUser(Roleid, Devicid, userid);
-                    var token = generateToken(userid, Devicid, Roleid);
+                    var token = GenerateToken(Roleid, Devicid, userid);
 
                     return StatusCode(StatusCodes.Status200OK,
                                     new apResponse<string> { StatusCode = 200, StatusMessage = "RegisterUser Login SuccessFull", ErrorMessage = "Null", data = token });
@@ -100,6 +114,8 @@ namespace anyPick.Controllers
         [Route("Signup")]
         public async Task<IActionResult> signup([FromBody]AnyPick_user anyPick_User)
         {
+
+
             AnyPick_user anyPick_User1 = new AnyPick_user(_config);
             anyPick_User1.RegistratingUser(anyPick_User);
             if (anyPick_User1.UserId == 10)
@@ -144,8 +160,7 @@ namespace anyPick.Controllers
 
 
 
-
-       
+               
 
 
 
@@ -196,7 +211,56 @@ namespace anyPick.Controllers
             }
             return Ok(ans);
         }
-        //Authorization end point check End-Point Ended--------------------------------------------------------------------/
+       
+
+
+        private ClaimsPrincipal DecodeToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+
+            if (jwtToken == null)
+            {
+                return null;
+            }
+
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(jwtToken.Claims, "jwt"));
+
+            return claimsPrincipal;
+        }
+
+
+
+        [HttpGet]
+        [Route("tokendecode")]
+        public async Task<IActionResult> tokendecode(string token)
+        {
+            bool check= false;
+            List<object> t = new List<object>();
+            ClaimsPrincipal claimsPrincipal = DecodeToken(token);
+
+            if (claimsPrincipal != null)
+            {
+                foreach (Claim claim in claimsPrincipal.Claims)
+                {
+                    t.Add($"{claim.Type}: {claim.Value}");
+                    check= true;
+                }
+            }
+            if (check == false)
+            {
+                return Ok("invalid token");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status200OK,
+                new apResponse<List<object>> { StatusCode = 200, StatusMessage = "", ErrorMessage = "", data = t });
+            }
+            
+
+        }
+
+
 
     }
 }

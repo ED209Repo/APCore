@@ -9,9 +9,13 @@ namespace anyPick.Models
     public class Resturant
     {
         public int Rest_Id { get; set; }
-        public string Resturant_type { get; set;}
+        public string Resturant_Name { get; set; }
         public string Open_Close_Time { get; set;}
         public string Offdays { get; set; }
+        public string Resturant_type { get; set; }
+        public string business_Id { get; set; }
+        public string licesnes_Id { get; set; }
+        public string Created_At { get; set; }
         public List<Rest_cat_list>  Rest_Cat_ { get; set; }
 
         private readonly IConfiguration _config;
@@ -52,12 +56,16 @@ namespace anyPick.Models
                         List<Rest_cat_list> O = new List<Rest_cat_list>();
                        
                         res.Rest_Id = int.Parse(dt.Rows[i][0].ToString());
-                        res.Resturant_type = dt.Rows[i][1].ToString();
+                        res.Resturant_Name = dt.Rows[i][1].ToString();
                         res.Open_Close_Time = dt.Rows[i][2].ToString();
                         res.Offdays = dt.Rows[i][3].ToString();
+                        res.Resturant_type = dt.Rows[i][4].ToString();
+                        res.business_Id = dt.Rows[i][5].ToString();
+                        res.licesnes_Id = dt.Rows[i][6].ToString();
+                        res.Created_At = dt.Rows[i][7].ToString();
 
-                        //Rest_Cat_ = s.Categoryids(res.Rest_Id);
-                        O = s.Categoryids(res.Rest_Id); //more than one object
+                      
+                        O = s.Categoryids(res.Rest_Id);
                         res.Rest_Cat_ = O;
                         resturants.Add(res);
                     }

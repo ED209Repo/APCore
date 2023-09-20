@@ -22,7 +22,7 @@ namespace anyPick.Controllers
         [Route("uploading_userProfile")]
         public async Task<ActionResult> uploading_userProfile(int id, [FromForm] ImageUpload image)
         {
-            ImageUpload imageUpload = new ImageUpload();
+            ImageUpload imageUpload = new ImageUpload(_config);
             var st = imageUpload.profileImage(id, image);
 
 
