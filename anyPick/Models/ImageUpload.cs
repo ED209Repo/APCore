@@ -1,30 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using System.Data;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 
 namespace anyPick.Models
 {
     public class ImageUpload
     {
-        public IFormFile file { get; set; }
+        public IFormFile File { get; set; }
 
+
+
+       
+        public ImageUpload()
+        {
+        
+        }
+        public ImageUpload(IConfiguration configuration)
+        {
+            _config= configuration;
+        }
 
         private readonly IConfiguration _config;
-        // public ImageUpload(IConfiguration configuration)
-        //{
-        //     file = null;
-        //     this._config = configuration;
-        //}
 
 
         public string profileImage(int id, ImageUpload image)
         {
             bool chec = false;
-            String FileName = image.file.FileName;
+            String FileName = image.File.FileName;
             String ext = Path.GetExtension(FileName);
             String[] imageExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".tif", ".psd", ".svg" };
             string _uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "Pics\\profile_Pic");
-            string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
+            
+          
             if (image == null)
             {
                 return null;
@@ -34,7 +44,7 @@ namespace anyPick.Models
             {
                 if (imageExtensions.Contains(ext))
                 {
-                    SqlConnection con = new SqlConnection(cs);
+                    SqlConnection con = new SqlConnection(_config.GetConnectionString("ConnStr"));
                     if (con.State == System.Data.ConnectionState.Closed)
                     {
                         con.Open();
@@ -63,7 +73,7 @@ namespace anyPick.Models
                     var filePath = Path.Combine(_uploadpath, fileName);
                     using (Stream stream = new FileStream(filePath, FileMode.Create))
                     {
-                        image.file.CopyTo(stream);
+                        image.File.CopyTo(stream);
                     }
                     if (chec == true)
                     {

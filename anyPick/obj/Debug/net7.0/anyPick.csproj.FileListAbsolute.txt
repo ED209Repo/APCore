@@ -130,3 +130,13 @@ D:\BIIT\APCore\anyPick\obj\Debug\net7.0\refint\anyPick.dll
 D:\BIIT\APCore\anyPick\obj\Debug\net7.0\anyPick.pdb
 D:\BIIT\APCore\anyPick\obj\Debug\net7.0\anyPick.genruntimeconfig.cache
 D:\BIIT\APCore\anyPick\obj\Debug\net7.0\ref\anyPick.dll
+D:\BIIT\APCore\anyPick\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
+D:\BIIT\APCore\anyPick\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
+D:\BIIT\APCore\anyPick\bin\Debug\net7.0\System.Drawing.Common.dll
+D:\BIIT\APCore\anyPick\bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll
+D:\BIIT\APCore\anyPick\bin\Debug\net7.0\System.Security.Permissions.dll
+D:\BIIT\APCore\anyPick\bin\Debug\net7.0\System.Windows.Extensions.dll
+D:\BIIT\APCore\anyPick\bin\Debug\net7.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
+D:\BIIT\APCore\anyPick\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
+D:\BIIT\APCore\anyPick\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
+D:\BIIT\APCore\anyPick\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
