@@ -1,4 +1,5 @@
-﻿using anyPick.Models;
+﻿using anyPick.Authentication_handling;
+using anyPick.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -64,6 +65,7 @@ namespace anyPick.Controllers
         public async Task<IActionResult> login(String Devicid, string? phone, int Roleid, bool Verified)
         {
            AnyPick_user _User = new AnyPick_user(_config);
+            Generate_Token gt=new Generate_Token(_config);
            AnyPickUserLogin _UserLogin = new AnyPickUserLogin(_config);
 
             if (Verified.ToString().Contains("False") && Roleid == 1)
@@ -72,7 +74,7 @@ namespace anyPick.Controllers
                 if (userid == 1002)
                 {
                     _UserLogin.SetUser_LoginGuest(Roleid,Devicid,userid);
-                    var token = GenerateToken(Roleid, Devicid, userid);
+                    var token = gt.GenerateToken(Roleid, Devicid, userid);
 
                     return StatusCode(StatusCodes.Status200OK,
                                       new apResponse<string> { StatusCode = 200,StatusMessage="Guest User Login SuccessFull",ErrorMessage="Null",data=token });
@@ -94,7 +96,7 @@ namespace anyPick.Controllers
                 else
                 {
                     _UserLogin.SetUser_LoginRegisterUser(Roleid, Devicid, userid);
-                    var token = GenerateToken(Roleid, Devicid, userid);
+                    var token = gt.GenerateToken(Roleid, Devicid, userid);
 
                     return StatusCode(StatusCodes.Status200OK,
                                     new apResponse<string> { StatusCode = 200, StatusMessage = "RegisterUser Login SuccessFull", ErrorMessage = "Null", data = token });
@@ -214,51 +216,10 @@ namespace anyPick.Controllers
        
 
 
-        private ClaimsPrincipal DecodeToken(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
-
-            if (jwtToken == null)
-            {
-                return null;
-            }
-
-            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(jwtToken.Claims, "jwt"));
-
-            return claimsPrincipal;
-        }
+       
 
 
 
-        [HttpGet]
-        [Route("tokendecode")]
-        public async Task<IActionResult> tokendecode(string token)
-        {
-            bool check= false;
-            List<object> t = new List<object>();
-            ClaimsPrincipal claimsPrincipal = DecodeToken(token);
-
-            if (claimsPrincipal != null)
-            {
-                foreach (Claim claim in claimsPrincipal.Claims)
-                {
-                    t.Add($"{claim.Type}: {claim.Value}");
-                    check= true;
-                }
-            }
-            if (check == false)
-            {
-                return Ok("invalid token");
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status200OK,
-                new apResponse<List<object>> { StatusCode = 200, StatusMessage = "", ErrorMessage = "", data = t });
-            }
-            
-
-        }
 
 
 
