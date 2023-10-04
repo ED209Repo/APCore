@@ -26,7 +26,7 @@ namespace anyPick.Models
             Rest_Cat_ = new List<Rest_cat_list>();
         }
 
-       // string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
+       
 
         public List<Resturant> Getresturants()
         {

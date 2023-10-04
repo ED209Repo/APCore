@@ -13,13 +13,18 @@ namespace anyPick.Models
         public string Unit_perPrice { get; set; }
         public string Prepare_time { get; set; }
         public List<Variations> variations { get; set; }
-       
+
 
 
         private readonly IConfiguration _config;
+
+        public Food_items()
+        {
+
+        }
         public Food_items(IConfiguration configuration)
         {
-            this._config= configuration;
+            this._config = configuration;
         }
 
 
@@ -53,7 +58,7 @@ namespace anyPick.Models
                         item.Description = dt.Rows[i][3].ToString();
                         item.Unit = dt.Rows[i][4].ToString();
                         item.Unit_perPrice = dt.Rows[i][5].ToString();
-                        item.Prepare_time =dt.Rows[i][6].ToString();
+                        item.Prepare_time = dt.Rows[i][6].ToString();
 
                         O = s.GetVariations(item.Food_Item_id);
                         item.variations = O;
@@ -76,5 +81,71 @@ namespace anyPick.Models
             }
         }
 
+
+
+        //public List<Food_items> DeepCopyFoodItems(List<Food_items> items)
+        //{
+        //    List<Food_items> deepCopy = new List<Food_items>();
+
+        //    for (int i = 0; i < items.Count; i++)
+        //    {
+        //        Food_items copiedFoodItem = new Food_items(_config)
+        //        {
+        //            Food_Item_id = items[i].Food_Item_id,
+        //            Rest_Cat_id = items[i].Rest_Cat_id,
+        //            Name = items[i].Name,
+        //            Description = items[i].Description,
+        //            Unit = items[i].Unit,
+        //            Unit_perPrice = items[i].Unit_perPrice,
+        //            Prepare_time = items[i].Prepare_time
+        //        };
+
+        //        List<Variations> copiedVariations = new List<Variations>();
+
+        //        for (int j = 0; j < items[i].variations.Count; j++)
+        //        {
+        //            Variations copiedVariation = new Variations()
+        //            {
+        //                V_Id = items[i].variations[j].V_Id,
+        //                food_item_id = items[i].variations[j].food_item_id,
+        //                Name = items[i].variations[j].Name,
+        //                Type = items[i].variations[j].Type,
+        //                Price_Dependent = items[i].variations[j].Price_Dependent
+        //            };
+
+        //            List<Var_Options> copiedOptions = new List<Var_Options>();
+
+        //            for (int k = 0; k < items[i].variations[j].Varation_Options.Count; k++)
+        //            {
+        //                Var_Options copiedOption = new Var_Options(_config)
+        //                {
+        //                    V_op_Id = items[i].variations[j].Varation_Options[k].V_op_Id,
+        //                    V_Id = items[i].variations[j].Varation_Options[k].V_Id,
+        //                    Name = items[i].variations[j].Varation_Options[k].Name,
+        //                    Price_Dependent = items[i].variations[j].Varation_Options[k].Price_Dependent,
+        //                    Price = items[i].variations[j].Varation_Options[k].Price,
+        //                    Add_Price = items[i].variations[j].Varation_Options[k].Add_Price,
+        //                    Annotation = items[i].variations[j].Varation_Options[k].Annotation
+        //                };
+
+        //                copiedOptions.Add(copiedOption);
+        //            }
+
+        //            copiedVariation.Varation_Options = copiedOptions;
+        //            copiedVariations.Add(copiedVariation);
+        //        }
+
+        //        copiedFoodItem.variations = copiedVariations;
+        //        deepCopy.Add(copiedFoodItem);
+        //    }
+
+        //    return deepCopy;
+        //}
+
+
+
+
     }
 }
+
+

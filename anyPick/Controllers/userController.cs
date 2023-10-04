@@ -32,29 +32,29 @@ namespace anyPick.Controllers
         }
 
         //Token Generation Method ----------------------------------------------------------------------------------/
-        private string GenerateToken(int Roleid, string Deviceid,int userid)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        //private string GenerateToken(int Roleid, string Deviceid,int userid)
+        //{
+        //    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        //    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
-            {
-              new Claim("Roleid", Roleid.ToString()), // User ID
-             new Claim("DeviceId", Deviceid), // Device ID
-              new Claim("userid", userid.ToString())
-            };
+        //    var claims = new[]
+        //    {
+        //      new Claim("Roleid", Roleid.ToString()), // User ID
+        //     new Claim("DeviceId", Deviceid), // Device ID
+        //      new Claim("userid", userid.ToString())
+        //    };
 
-            var token = new JwtSecurityToken(
-                _config["Jwt:Issuer"],
-                _config["Jwt:Audience"],
-                 claims: claims,
-                 expires: DateTime.Now.AddMinutes(2),
-                 signingCredentials: credentials
+        //    var token = new JwtSecurityToken(
+        //        _config["Jwt:Issuer"],
+        //        _config["Jwt:Audience"],
+        //         claims: claims,
+        //         expires: DateTime.Now.AddMinutes(2),
+        //         signingCredentials: credentials
           
-            );
+        //    );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        //    return new JwtSecurityTokenHandler().WriteToken(token);
+        //}
        
 
 

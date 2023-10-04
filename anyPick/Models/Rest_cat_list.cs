@@ -48,7 +48,7 @@ namespace anyPick.Models
                         res.Name =dt.Rows[i][3].ToString();
                         res.Parent_Category = int.Parse(dt.Rows[i][4].ToString());
 
-                        O = s.foods_items(res.Rest_Cat_id); //more than one object
+                        O = s.foods_items(res.Rest_Cat_id);
                         res.getting_food_Items = O;
                         ids.Add(res);
                     }
@@ -63,6 +63,8 @@ namespace anyPick.Models
                 con.Close();
             }
 
+
+
             if (check == true)
             {
                 return ids;
@@ -72,6 +74,10 @@ namespace anyPick.Models
                 return null;
             }
         }
+
+
+
+
 
     }
 }
