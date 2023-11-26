@@ -19,7 +19,7 @@ namespace anyPick.Models
             StatusCode = statuscode;
             StatusMessage = statusmessage;
             ErrorMessage = errormessage;
-            data = this.data;
+            this.data = data;
         }
 
        

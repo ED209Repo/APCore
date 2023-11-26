@@ -1,6 +1,7 @@
 ﻿using System.Data.SqlClient;
 using System.Data;
 using System.Drawing;
+using Microsoft.AspNetCore.Mvc;
 
 namespace anyPick.Models
 {
@@ -23,6 +24,7 @@ namespace anyPick.Models
         {
 
         }
+        
         public Cart_Items(IConfiguration configuration)
         {
             this._config = configuration;
@@ -93,17 +95,8 @@ namespace anyPick.Models
 
                 return response;
             }
-
-
-          
-           
-
             
         }
-
-         
-
-
 
     }
 }

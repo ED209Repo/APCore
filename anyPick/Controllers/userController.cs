@@ -104,7 +104,7 @@ namespace anyPick.Controllers
             }
 
             return StatusCode(StatusCodes.Status200OK,
-                 new apResponse<string> { StatusCode = 204,StatusMessage="No Content Found",ErrorMessage="Invalid Role" ,data=null});
+                 new apResponse<string> { StatusCode = 204,StatusMessage="No Content Found",ErrorMessage="Invalid Role" ,data= null});
         }
 
 

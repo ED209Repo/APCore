@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\BIIT\\APCore\\anyPick\\anyPick.csproj": {}
+    "C:\\Users\\HAMZA\\Downloads\\APCore\\anyPick\\anyPick.csproj": {}
   },
   "projects": {
-    "D:\\BIIT\\APCore\\anyPick\\anyPick.csproj": {
+    "C:\\Users\\HAMZA\\Downloads\\APCore\\anyPick\\anyPick.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BIIT\\APCore\\anyPick\\anyPick.csproj",
+        "projectUniqueName": "C:\\Users\\HAMZA\\Downloads\\APCore\\anyPick\\anyPick.csproj",
         "projectName": "anyPick",
-        "projectPath": "D:\\BIIT\\APCore\\anyPick\\anyPick.csproj",
-        "packagesPath": "C:\\Users\\Hashir Zaheer\\.nuget\\packages\\",
-        "outputPath": "D:\\BIIT\\APCore\\anyPick\\obj\\",
+        "projectPath": "C:\\Users\\HAMZA\\Downloads\\APCore\\anyPick\\anyPick.csproj",
+        "packagesPath": "C:\\Users\\HAMZA\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HAMZA\\Downloads\\APCore\\anyPick\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Hashir Zaheer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\HAMZA\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -112,7 +112,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -4,8 +4,6 @@ namespace anyPick.Models
 {
     public class Cart
     {
-
-
         public int Cart_Id { get; set; }
         public int Order_Id { get; set; }
         public string Cart_status { get; set; }
@@ -16,8 +14,6 @@ namespace anyPick.Models
         public string Updated_At { get; set; }
         public int UserId { get; set; }
         public int Rest_Id { get; set; }
-
-
 
 
         private readonly IConfiguration _config;
@@ -32,7 +28,7 @@ namespace anyPick.Models
 
 
 
-        public apResponse<string> CreateCart(int id)
+        public apResponse<string> CreateCart(int id,int Rest_id)
         {
             apResponse<string>? apresponse4 =null;
             bool check=false;
@@ -43,7 +39,7 @@ namespace anyPick.Models
                 if (con.State == System.Data.ConnectionState.Closed)
                 {
                     con.Open();
-                    string q1 = "insert into cart values(0,'DRAFT','PENDING','PENDING','PENDING','" + DateTime.Now.ToString() + "','" + DateTime.Now.ToString() + "','" + id + "',0)";
+                    string q1 = "insert into cart values(0,'DRAFT','PENDING','PENDING','PENDING','" + DateTime.Now.ToString() + "','" + DateTime.Now.ToString() + "','" + id + "','"+Rest_id+"')";
                     SqlCommand cmd = new SqlCommand(q1,con);
                     cmd.ExecuteNonQuery();
                     con.Close();
@@ -67,7 +63,9 @@ namespace anyPick.Models
             {
                 if (check == true)
                 {
-                   apResponse<string> response1=new apResponse<string>(200, "CART CREATED SUCCESSFULLY", "NULL", "NULL");
+                    
+                    apResponse<string> response1 = new apResponse<string>(200, "CART CREATED SUCCESSFULLY, Rest_id: " + Rest_id, "NULL",Rest_id.ToString());
+
                     return response1;
                 }
                 else
