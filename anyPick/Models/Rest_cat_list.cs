@@ -80,4 +80,21 @@ namespace anyPick.Models
 
 
     }
+    public class Resturant_Cataegory
+    {
+        public int Rest_Cat_id { get; set; }
+        public int Rest_id { get; set; }
+        public int Cat_temp_id { get; set; }
+        public string Name { get; set; }
+        public int Parent_Category { get; set; }
+
+        private IConfiguration _config;
+        public Resturant_Cataegory(IConfiguration config)
+        {
+            _config = config;
+        }
+
+
+
+    }
 }

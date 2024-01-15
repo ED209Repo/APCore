@@ -2978,11 +2978,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HAMZA\\Downloads\\APCore\\anyPick\\anyPick.csproj",
+      "projectUniqueName": "C:\\Users\\HAMZA\\Desktop\\APCore\\anyPick\\anyPick.csproj",
       "projectName": "anyPick",
-      "projectPath": "C:\\Users\\HAMZA\\Downloads\\APCore\\anyPick\\anyPick.csproj",
+      "projectPath": "C:\\Users\\HAMZA\\Desktop\\APCore\\anyPick\\anyPick.csproj",
       "packagesPath": "C:\\Users\\HAMZA\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HAMZA\\Downloads\\APCore\\anyPick\\obj\\",
+      "outputPath": "C:\\Users\\HAMZA\\Desktop\\APCore\\anyPick\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\HAMZA\\AppData\\Roaming\\NuGet\\NuGet.Config",

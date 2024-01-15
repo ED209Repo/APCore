@@ -45,8 +45,8 @@ namespace anyPick.Authentication_handling
             bool check = false;
             bool check1 = false;
             List<object> t = new List<object>();
-            apResponse<int> ap = new apResponse<int>(); ;
-            apResponse<int> ap1 = new apResponse<int>(); ;
+            apResponse<int> ap = new apResponse<int>(); 
+            apResponse<int> ap1 = new apResponse<int>(); 
             apResponse<int> ap2 = new apResponse<int>();
             ClaimsPrincipal claimsPrincipal = checking_ClaimsPrincipal(token);
 

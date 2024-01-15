@@ -86,7 +86,7 @@ namespace anyPick.Models
 
         public void RegistratingUser(AnyPick_user anyPick_User)
         {
-            string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
+            //string cs = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANYPICK;Data Source=DESKTOP-DEDQ8GT\\SQL";
             SqlConnection con = new SqlConnection(_config.GetConnectionString("ConnStr")); //_config.GetConnectionString("ConnStr")
             if (con.State == System.Data.ConnectionState.Closed)
             {

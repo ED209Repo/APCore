@@ -77,12 +77,12 @@ namespace anyPick.Controllers
                     var token = gt.GenerateToken(Roleid, Devicid, userid);
 
                     return StatusCode(StatusCodes.Status200OK,
-                                      new apResponse<string> { StatusCode = 200,StatusMessage="Guest User Login SuccessFull",ErrorMessage="Null",data=token });
+                                      new apResponse<string> { StatusCode = 200,StatusMessage="Guest User Login SuccessFull",ErrorMessage="No Error",data= token });
                 }
                 else
                 {
                     return StatusCode(StatusCodes.Status404NotFound,
-                                     new apResponse<string> { StatusCode = 404, StatusMessage = "Role Not Found", ErrorMessage = "Null", data = null});
+                                     new apResponse<string> { StatusCode = 404, StatusMessage = "Role Not Found", ErrorMessage = "No Error", data = null});
                 }
             }
             else if(Verified.ToString().Contains("True") && Roleid == 2)
@@ -99,7 +99,7 @@ namespace anyPick.Controllers
                     var token = gt.GenerateToken(Roleid, Devicid, userid);
 
                     return StatusCode(StatusCodes.Status200OK,
-                                    new apResponse<string> { StatusCode = 200, StatusMessage = "RegisterUser Login SuccessFull", ErrorMessage = "Null", data = token });
+                                    new apResponse<string> { StatusCode = 200, StatusMessage = "RegisterUser Login SuccessFull", ErrorMessage = "No Error", data = token });
                 }
             }
 
@@ -136,7 +136,7 @@ namespace anyPick.Controllers
 
 
 
-        //All_Nearby Resturants EndPoint Method ---------------------------------------------------------------------/
+        //All_Nearby Resturants EndPoint Method //
 
 
         [HttpGet]
@@ -158,32 +158,6 @@ namespace anyPick.Controllers
             }
            
         }
-
-
-
-
-               
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         //Authorization end point check End-Point Ended--------------------------------------------------------------------/

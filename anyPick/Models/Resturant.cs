@@ -15,7 +15,7 @@ namespace anyPick.Models
         public string Resturant_type { get; set; }
         public string business_Id { get; set; }
         public string licesnes_Id { get; set; }
-        public string Created_At { get; set; }
+        
         public List<Rest_cat_list>  Rest_Cat_ { get; set; }
 
         private readonly IConfiguration _config;
@@ -62,7 +62,7 @@ namespace anyPick.Models
                         res.Resturant_type = dt.Rows[i][4].ToString();
                         res.business_Id = dt.Rows[i][5].ToString();
                         res.licesnes_Id = dt.Rows[i][6].ToString();
-                        res.Created_At = dt.Rows[i][7].ToString();
+                        //res.Created_At = dt.Rows[i][7].ToString();
 
                       
                         O = s.Categoryids(res.Rest_Id);

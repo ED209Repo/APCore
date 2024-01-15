@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pics\Res_Logo\" />
     <Folder Include="Pics\profile_Pic\" />
   </ItemGroup>
 

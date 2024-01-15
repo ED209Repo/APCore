@@ -7,31 +7,31 @@ using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationMan
 
 namespace anyPick.Models
 {
-    public class ImageUpload
+    public class Resturant_Logo
     {
         public IFormFile File { get; set; }
 
-        public ImageUpload()
+        public Resturant_Logo()
         {
-        
+
         }
-        public ImageUpload(IConfiguration configuration)
+        public Resturant_Logo(IConfiguration configuration)
         {
-            _config= configuration;
+            _config = configuration;
         }
 
         private readonly IConfiguration _config;
 
 
-        public string profileImage(int id, ImageUpload image)
+        public string Resturant_logoo(int id, Resturant_Logo image)
         {
             bool check = false;
             String FileName = image.File.FileName;
             String ext = Path.GetExtension(FileName);
             String[] imageExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".tif", ".psd", ".svg" };
-            string _uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "Pics\\profile_Pic");
-            
-          
+            string _uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "Pics\\Res_Logo");
+
+
             if (image == null)
             {
                 return null;
@@ -45,7 +45,7 @@ namespace anyPick.Models
                     if (con.State == System.Data.ConnectionState.Closed)
                     {
                         con.Open();
-                        string q1 = "select Userid from AnyPickuser where userid='" + id + "'";
+                        string q1 = "select Rest_id from Resturant where Rest_id='" + id + "'";
                         SqlCommand cmd = new SqlCommand(q1, con);
                         SqlDataAdapter sdr = new SqlDataAdapter(cmd);
                         DataTable dt = new DataTable();
@@ -58,7 +58,7 @@ namespace anyPick.Models
                         }
                         else
                         {
-                            return "User Id Not Exist";
+                            return "RestId Not Exist";
                         }
                     }
                     else
@@ -77,7 +77,7 @@ namespace anyPick.Models
                         if (con.State == System.Data.ConnectionState.Closed)
                         {
                             con.Open();
-                            string q1 = "update anypickuser set profileimage='" + filePath.ToString() + "' where userid='" + id + "'";
+                            string q1 = "UPDATE Resturant SET Res_Logo='" + filePath.ToString() + "' WHERE Rest_id='" + id + "'";
                             SqlCommand cmd = new SqlCommand(q1, con);
                             cmd.ExecuteNonQuery();
                             con.Close();
@@ -95,7 +95,7 @@ namespace anyPick.Models
                     return "Please Upload Image With" + imageExtensions.ToString();
                 }
 
-                return "Image saved Successfully";
+                return "Resturant_Logo Image saved Successfully";
 
             }
             catch (Exception ex)
@@ -105,6 +105,6 @@ namespace anyPick.Models
 
         }
 
-
+        
     }
 }

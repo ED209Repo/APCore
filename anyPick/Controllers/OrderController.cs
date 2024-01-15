@@ -97,7 +97,7 @@ namespace anyPick.Controllers
                 if (con.State == System.Data.ConnectionState.Closed)
                 {
                     con.Open();
-                    string q1 = "insert into Order_table values('"+v.Order_details+"','"+v.Cart_id+"','"+v.Order_status+"','"+v.rest_id+"','"+v.Payment_status+"','"+v.Order_completion_time+"','"+v.User_id+"','"+v.vechile_id+ "','"+DateTime.Now.ToString()+ "','" +DateTime.Now.ToString()+"')";
+                    string q1 = "insert into Order_table values('"+v.Order_details+"','"+v.Cart_id+"','Pending','"+v.rest_id+"','"+v.Payment_status+"','---','"+v.User_id+"','"+v.vechile_id+ "','"+DateTime.Now.ToString()+ "','" +DateTime.Now.ToString()+"')";
                     SqlCommand cmd = new SqlCommand(q1, con);
                     cmd.ExecuteNonQuery();
                     con.Close();
@@ -143,7 +143,7 @@ namespace anyPick.Controllers
         //{
         //    Checkout_order cc = new Checkout_order();
         //    apResponse<string> response = new apResponse<string>();
-        //    apresponse = cc.Checkout(apresponse.data);
+        //    response cc.Checkout(apresponse.data);
         //    if (apresponse.data != null)
         //    {
         //        return StatusCode(StatusCodes.Status200OK,
