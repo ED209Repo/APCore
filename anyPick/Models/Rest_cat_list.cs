@@ -48,7 +48,7 @@ namespace anyPick.Models
                         res.Name =dt.Rows[i][3].ToString();
                         res.Parent_Category = int.Parse(dt.Rows[i][4].ToString());
 
-                        O = s.foods_items(res.Rest_Cat_id); //more than one object
+                        O = s.foods_items(res.Rest_Cat_id);
                         res.getting_food_Items = O;
                         ids.Add(res);
                     }
@@ -63,6 +63,8 @@ namespace anyPick.Models
                 con.Close();
             }
 
+
+
             if (check == true)
             {
                 return ids;
@@ -72,6 +74,28 @@ namespace anyPick.Models
                 return null;
             }
         }
+
+
+    }
+    public class Resturant_Cataegory
+    {
+        public int Rest_Cat_id { get; set; }
+        public int Rest_id { get; set; }
+        public int Cat_temp_id { get; set; }
+        public string Name { get; set; }
+        public int Parent_Category { get; set; }
+
+        private IConfiguration _config;
+        public Resturant_Cataegory(IConfiguration config)
+        {
+            _config = config;
+        }
+        public Resturant_Cataegory() 
+        {
+
+        }
+
+
 
     }
 }

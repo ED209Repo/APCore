@@ -13,13 +13,18 @@ namespace anyPick.Models
         public string Unit_perPrice { get; set; }
         public string Prepare_time { get; set; }
         public List<Variations> variations { get; set; }
-       
+
 
 
         private readonly IConfiguration _config;
+
+        public Food_items()
+        {
+
+        }
         public Food_items(IConfiguration configuration)
         {
-            this._config= configuration;
+            this._config = configuration;
         }
 
 
@@ -53,7 +58,7 @@ namespace anyPick.Models
                         item.Description = dt.Rows[i][3].ToString();
                         item.Unit = dt.Rows[i][4].ToString();
                         item.Unit_perPrice = dt.Rows[i][5].ToString();
-                        item.Prepare_time =dt.Rows[i][6].ToString();
+                        item.Prepare_time = dt.Rows[i][6].ToString();
 
                         O = s.GetVariations(item.Food_Item_id);
                         item.variations = O;
@@ -75,6 +80,17 @@ namespace anyPick.Models
                 return null;
             }
         }
+        
+
+
+
+
+
+
+
 
     }
+    
 }
+
+

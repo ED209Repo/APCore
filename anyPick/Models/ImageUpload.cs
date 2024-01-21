@@ -11,9 +11,6 @@ namespace anyPick.Models
     {
         public IFormFile File { get; set; }
 
-
-
-       
         public ImageUpload()
         {
         
@@ -28,7 +25,7 @@ namespace anyPick.Models
 
         public string profileImage(int id, ImageUpload image)
         {
-            bool chec = false;
+            bool check = false;
             String FileName = image.File.FileName;
             String ext = Path.GetExtension(FileName);
             String[] imageExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".tif", ".psd", ".svg" };
@@ -56,7 +53,7 @@ namespace anyPick.Models
                         sdr.Fill(dt);
                         if (dt.Rows.Count > 0)
                         {
-                            chec = true;
+                            check = true;
                             con.Close();
                         }
                         else
@@ -75,7 +72,7 @@ namespace anyPick.Models
                     {
                         image.File.CopyTo(stream);
                     }
-                    if (chec == true)
+                    if (check == true)
                     {
                         if (con.State == System.Data.ConnectionState.Closed)
                         {
@@ -95,10 +92,10 @@ namespace anyPick.Models
                 }
                 else
                 {
-                    return "Plz Upload Image With" + imageExtensions.ToString();
+                    return "Please Upload Image With" + imageExtensions.ToString();
                 }
 
-                return "Pic saved Successfully";
+                return "Image saved Successfully";
 
             }
             catch (Exception ex)

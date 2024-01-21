@@ -1,4 +1,5 @@
-﻿using anyPick.Models;
+﻿using anyPick.Authentication_handling;
+using anyPick.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,29 +32,29 @@ namespace anyPick.Controllers
         }
 
         //Token Generation Method ----------------------------------------------------------------------------------/
-        private string GenerateToken(int Roleid, string Deviceid,int userid)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        //private string GenerateToken(int Roleid, string Deviceid,int userid)
+        //{
+        //    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        //    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
-            {
-              new Claim("Roleid", Roleid.ToString()), // User ID
-             new Claim("DeviceId", Deviceid), // Device ID
-              new Claim("userid", userid.ToString())
-            };
+        //    var claims = new[]
+        //    {
+        //      new Claim("Roleid", Roleid.ToString()), // User ID
+        //     new Claim("DeviceId", Deviceid), // Device ID
+        //      new Claim("userid", userid.ToString())
+        //    };
 
-            var token = new JwtSecurityToken(
-                _config["Jwt:Issuer"],
-                _config["Jwt:Audience"],
-                 claims: claims,
-                 expires: DateTime.Now.AddMinutes(2),
-                 signingCredentials: credentials
+        //    var token = new JwtSecurityToken(
+        //        _config["Jwt:Issuer"],
+        //        _config["Jwt:Audience"],
+        //         claims: claims,
+        //         expires: DateTime.Now.AddMinutes(2),
+        //         signingCredentials: credentials
           
-            );
+        //    );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        //    return new JwtSecurityTokenHandler().WriteToken(token);
+        //}
        
 
 
@@ -64,6 +65,7 @@ namespace anyPick.Controllers
         public async Task<IActionResult> login(String Devicid, string? phone, int Roleid, bool Verified)
         {
            AnyPick_user _User = new AnyPick_user(_config);
+            Generate_Token gt=new Generate_Token(_config);
            AnyPickUserLogin _UserLogin = new AnyPickUserLogin(_config);
 
             if (Verified.ToString().Contains("False") && Roleid == 1)
@@ -72,15 +74,15 @@ namespace anyPick.Controllers
                 if (userid == 1002)
                 {
                     _UserLogin.SetUser_LoginGuest(Roleid,Devicid,userid);
-                    var token = GenerateToken(Roleid, Devicid, userid);
+                    var token = gt.GenerateToken(Roleid, Devicid, userid);
 
                     return StatusCode(StatusCodes.Status200OK,
-                                      new apResponse<string> { StatusCode = 200,StatusMessage="Guest User Login SuccessFull",ErrorMessage="Null",data=token });
+                                      new apResponse<string> { StatusCode = 200,StatusMessage="Guest User Login SuccessFull",ErrorMessage="No Error",data= token });
                 }
                 else
                 {
                     return StatusCode(StatusCodes.Status404NotFound,
-                                     new apResponse<string> { StatusCode = 404, StatusMessage = "Role Not Found", ErrorMessage = "Null", data = null});
+                                     new apResponse<string> { StatusCode = 404, StatusMessage = "Role Not Found", ErrorMessage = "No Error", data = null});
                 }
             }
             else if(Verified.ToString().Contains("True") && Roleid == 2)
@@ -94,15 +96,15 @@ namespace anyPick.Controllers
                 else
                 {
                     _UserLogin.SetUser_LoginRegisterUser(Roleid, Devicid, userid);
-                    var token = GenerateToken(Roleid, Devicid, userid);
+                    var token = gt.GenerateToken(Roleid, Devicid, userid);
 
                     return StatusCode(StatusCodes.Status200OK,
-                                    new apResponse<string> { StatusCode = 200, StatusMessage = "RegisterUser Login SuccessFull", ErrorMessage = "Null", data = token });
+                                    new apResponse<string> { StatusCode = 200, StatusMessage = "RegisterUser Login SuccessFull", ErrorMessage = "No Error", data = token });
                 }
             }
 
             return StatusCode(StatusCodes.Status200OK,
-                 new apResponse<string> { StatusCode = 204,StatusMessage="No Content Found",ErrorMessage="Invalid Role" ,data=null});
+                 new apResponse<string> { StatusCode = 204,StatusMessage="No Content Found",ErrorMessage="Invalid Role" ,data= null});
         }
 
 
@@ -134,7 +136,7 @@ namespace anyPick.Controllers
 
 
 
-        //All_Nearby Resturants EndPoint Method ---------------------------------------------------------------------/
+        //All_Nearby Resturants EndPoint Method //
 
 
         [HttpGet]
@@ -156,32 +158,6 @@ namespace anyPick.Controllers
             }
            
         }
-
-
-
-
-               
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         //Authorization end point check End-Point Ended--------------------------------------------------------------------/
@@ -214,51 +190,10 @@ namespace anyPick.Controllers
        
 
 
-        private ClaimsPrincipal DecodeToken(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
-
-            if (jwtToken == null)
-            {
-                return null;
-            }
-
-            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(jwtToken.Claims, "jwt"));
-
-            return claimsPrincipal;
-        }
+       
 
 
 
-        [HttpGet]
-        [Route("tokendecode")]
-        public async Task<IActionResult> tokendecode(string token)
-        {
-            bool check= false;
-            List<object> t = new List<object>();
-            ClaimsPrincipal claimsPrincipal = DecodeToken(token);
-
-            if (claimsPrincipal != null)
-            {
-                foreach (Claim claim in claimsPrincipal.Claims)
-                {
-                    t.Add($"{claim.Type}: {claim.Value}");
-                    check= true;
-                }
-            }
-            if (check == false)
-            {
-                return Ok("invalid token");
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status200OK,
-                new apResponse<List<object>> { StatusCode = 200, StatusMessage = "", ErrorMessage = "", data = t });
-            }
-            
-
-        }
 
 
 

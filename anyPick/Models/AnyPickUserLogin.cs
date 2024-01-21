@@ -17,6 +17,10 @@ namespace anyPick.Models
 
 
         private readonly IConfiguration _config;
+        public AnyPickUserLogin()
+        {
+           
+        }
         public AnyPickUserLogin(IConfiguration configuration)
         {
             this._config = configuration;
