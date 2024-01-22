@@ -76,9 +76,6 @@ namespace anyPick.Models
         }
 
 
-
-
-
     }
     public class Resturant_Cataegory
     {
@@ -92,6 +89,10 @@ namespace anyPick.Models
         public Resturant_Cataegory(IConfiguration config)
         {
             _config = config;
+        }
+        public Resturant_Cataegory() 
+        {
+
         }
 
 

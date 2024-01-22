@@ -64,6 +64,11 @@ namespace anyPick.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest,
                     new apResponse<string> { StatusCode = 400, StatusMessage = "Select Image Plz", ErrorMessage = "", data = null });
             }
+            else if (st.Contains("RestId Not Exist"))
+            {
+                return StatusCode(StatusCodes.Status200OK,
+                    new apResponse<string> { StatusCode = 204, StatusMessage = "RestId Not EXit", ErrorMessage = "", data = null });
+            }
             else if (st.Contains("Plz Upload Image With"))
             {
                 return StatusCode(StatusCodes.Status200OK,
@@ -93,6 +98,39 @@ namespace anyPick.Controllers
             {
                 return StatusCode(StatusCodes.Status200OK,
                     new apResponse<string> { StatusCode = 204, StatusMessage = "RestId Not EXit", ErrorMessage = "", data = null });
+            }
+            else if (st.Contains("Plz Upload Image With"))
+            {
+                return StatusCode(StatusCodes.Status200OK,
+                    new apResponse<string> { StatusCode = 400, StatusMessage = "Upload Image in jpg,png,jpeg,gif,psd etc ", ErrorMessage = "", data = null });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status201Created,
+                    new apResponse<string> { StatusCode = 201, StatusMessage = "Pics Saved", ErrorMessage = "", data = "Picture Saved Succesfully" });
+            }
+
+
+        }
+
+        //Food Item Image
+        [HttpPost]
+        [Route("Food_Item_Image")]
+        public async Task<ActionResult> FoodItem_Image(int id, [FromForm] FoodItemImage image)
+        {
+            FoodItemImage imageUpload = new FoodItemImage(_config);
+            var st = imageUpload.FoodItem_Image(id, image);
+
+
+            if (st == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new apResponse<string> { StatusCode = 400, StatusMessage = "Select Image Plz", ErrorMessage = "", data = null });
+            }
+            else if (st.Contains("Food Item Id Not Exist"))
+            {
+                return StatusCode(StatusCodes.Status200OK,
+                    new apResponse<string> { StatusCode = 204, StatusMessage = "Food Item Id Not EXit", ErrorMessage = "", data = null });
             }
             else if (st.Contains("Plz Upload Image With"))
             {

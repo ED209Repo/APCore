@@ -292,3 +292,4 @@ C:\Users\HAMZA\Desktop\APCore\anyPick\obj\Debug\net7.0\refint\anyPick.dll
 C:\Users\HAMZA\Desktop\APCore\anyPick\obj\Debug\net7.0\anyPick.pdb
 C:\Users\HAMZA\Desktop\APCore\anyPick\obj\Debug\net7.0\anyPick.genruntimeconfig.cache
 C:\Users\HAMZA\Desktop\APCore\anyPick\obj\Debug\net7.0\ref\anyPick.dll
+C:\Users\HAMZA\Desktop\APCore\anyPick\obj\Debug\net7.0\anyPick.sourcelink.json

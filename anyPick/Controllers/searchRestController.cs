@@ -83,7 +83,7 @@ namespace anyPick.Controllers
         [HttpPost]
         [Route("Add_Resturant")]
         
-        public async Task<ActionResult> Add_Resturant([FromBody]AddResturant ad)
+        public async Task<ActionResult> Add_Resturant([FromBody] AddResturant ad)
         {
             apResponse<string>? apresponse4 = null;
             bool check = false;
@@ -94,7 +94,7 @@ namespace anyPick.Controllers
                 if (con.State == System.Data.ConnectionState.Closed)
                 {
                     con.Open();
-                    string q1 = "insert into Resturant values('" + ad.Resturant_Name + "','" + ad.Open_Close_Time + "','" + ad.Offdays + "','" + ad.Resturant_type + "','" + ad.business_Id + "','" + ad.licesnes_Id + "','" + DateTime.Now.ToString() + "')";
+                    string q1 = "insert into Resturant values('" + ad.Resturant_Name + "','" + ad.Open_Close_Time + "','" + ad.Offdays + "','" + ad.Resturant_type + "','" + ad.business_Id + "','" + ad.licesnes_Id + "','" + DateTime.Now.ToString() + "','"+ad.promotional_Image+"','"+ad.Res_Logo+"')";
                     SqlCommand cmd = new SqlCommand(q1, con);
                     cmd.ExecuteNonQuery();
                     con.Close();
@@ -128,8 +128,9 @@ namespace anyPick.Controllers
                     return StatusCode(StatusCodes.Status200OK,
                                         new apResponse<string> { StatusCode = 200, StatusMessage = "Resturant Not Added ", ErrorMessage = "NULL", data = "NULL" }); ;
                 }
-            }
 
+            }
+            
 
         }
     }

@@ -11,7 +11,8 @@ namespace anyPick.Models
         public string Resturant_type { get; set; }
         public string business_Id { get; set; }
         public string licesnes_Id { get; set; }
-        
+        public string promotional_Image {  get; set; }
+        public string Res_Logo { get; set; }
 
         private readonly IConfiguration _config;
         public AddResturant()

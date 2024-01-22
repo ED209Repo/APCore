@@ -42,18 +42,42 @@ namespace anyPick.Models
                 if (imageExtensions.Contains(ext))
                 {
                     SqlConnection con = new SqlConnection(_config.GetConnectionString("ConnStr"));
+                    if (con.State == System.Data.ConnectionState.Closed)
+                    {
+                        con.Open();
+                        string q1 = "select Rest_id from Resturant where Rest_id='" + id + "'";
+                        SqlCommand cmd = new SqlCommand(q1, con);
+                        SqlDataAdapter sdr = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+
+                        sdr.Fill(dt);
+                        if (dt.Rows.Count > 0)
+                        {
+                            check = true;
+                            con.Close();
+                        }
+                        else
+                        {
+                            return "RestId Not Exist";
+                        }
+                    }
+                    else
+                    {
+                        con.Close();
+                    }
+
                     var fileName = $"{id}{ext}";
                     var filePath = Path.Combine(_uploadpath, fileName);
                     using (Stream stream = new FileStream(filePath, FileMode.Create))
                     {
                         image.File.CopyTo(stream);
                     }
-                    
-                    
+                    if (check == true)
+                    {
                         if (con.State == System.Data.ConnectionState.Closed)
                         {
                             con.Open();
-                            string q1 = "insert into promotionalImgs Values ('" + filePath.ToString() + "' )";
+                            string q1 = "UPDATE Resturant SET promotional_Images='" + filePath.ToString() + "' WHERE Rest_id='" + id + "'";
                             SqlCommand cmd = new SqlCommand(q1, con);
                             cmd.ExecuteNonQuery();
                             con.Close();
@@ -63,15 +87,15 @@ namespace anyPick.Models
                             con.Close();
                         }
 
-                    
+                    }
 
                 }
                 else
                 {
-                    return "Please Upload Promotional Image With" + imageExtensions.ToString();
+                    return "Please Upload promotional Image With" + imageExtensions.ToString();
                 }
 
-                return "Image saved Successfully";
+                return "promotional Image saved Successfully";
 
             }
             catch (Exception ex)
